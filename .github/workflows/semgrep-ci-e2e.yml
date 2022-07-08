@@ -10,6 +10,7 @@ jobs:
     outputs:
       docker_tag: ${{ steps.get-inputs.outputs.docker_tag }}
     steps:
+      - uses: actions/checkout@v3
       - name: Set variables
         id: get-inputs
         env:
