@@ -1,0 +1,34 @@
+name: Semgrep CI E2E Test
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  get-inputs:
+    name: Get Inputs
+    runs-on: ubuntu-22.04
+    outputs:
+      docker_tag: ${{ steps.get-inputs.outputs.docker_tag }}
+    steps:
+      - name: Set variables
+        id: get-inputs
+        env:
+          DOCKER_TAG: edge
+        run: |
+          SEMGREP_DOCKER_IMAGE_TAG=$(cat semgrep-docker-image-tag.txt)
+          echo "::set-output name=docker_tag::${SEMGREP_DOCKER_IMAGE_TAG}"
+      - name: Debug
+        run: |
+          echo "${{ steps.get-inputs.outputs.docker_tag }}"
+
+  semgrep-ci:
+    name: Static Analysis Scan
+    runs-on: ubuntu-22.04
+    env:
+      SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_E2E_APP_TOKEN }}
+    needs: get-inputs
+    container:
+      image: "returntocorp/semgrep:${{ needs.get-inputs.outputs.docker_tag }}"
+    steps:
+      - uses: actions/checkout@v3
+      - run: semgrep ci
