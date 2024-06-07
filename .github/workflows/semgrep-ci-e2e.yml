@@ -17,7 +17,7 @@ jobs:
           DOCKER_TAG: edge
         run: |
           SEMGREP_DOCKER_IMAGE_TAG=$(cat semgrep-docker-image-tag.txt)
-          echo "::set-output name=docker_tag::${SEMGREP_DOCKER_IMAGE_TAG}"
+          echo "docker_tag=${SEMGREP_DOCKER_IMAGE_TAG}" >> $GITHUB_OUTPUT
       - name: Debug
         run: |
           echo "${{ steps.get-inputs.outputs.docker_tag }}"
