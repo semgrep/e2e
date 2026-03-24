@@ -19,8 +19,10 @@ jobs:
           SEMGREP_DOCKER_IMAGE_TAG=$(cat semgrep-docker-image-tag.txt)
           echo "::set-output name=docker_tag::${SEMGREP_DOCKER_IMAGE_TAG}"
       - name: Debug
+        env:
+          DOCKER_TAG: ${{ steps.get-inputs.outputs.docker_tag }}
         run: |
-          echo "${{ steps.get-inputs.outputs.docker_tag }}"
+          echo "$DOCKER_TAG"
 
   semgrep-ci:
     name: Static Analysis Scan
