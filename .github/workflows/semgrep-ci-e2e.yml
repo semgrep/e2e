@@ -10,7 +10,7 @@ jobs:
     outputs:
       docker_tag: ${{ steps.get-inputs.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
       - name: Set variables
         id: get-inputs
         env:
@@ -33,5 +33,5 @@ jobs:
     container:
       image: "returntocorp/semgrep:${{ needs.get-inputs.outputs.docker_tag }}"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
       - run: semgrep ci
